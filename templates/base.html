@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <title>?</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/style1.css">
+    </head>
+    <body style="background: radial-gradient(#FADFAD, #482F23)">
+        <header>
+            <nav class="navbar navbar-expand-lg bg-dark">
+              <div class="container-fluid">
+                  <a class="navbar-brand">
+                      <img src="/static/img/icon.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
+                  </a>
+                  <a class="navbar-brand"><h2 style="color:#FFDEAD">Стратегия</h2></a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="/" style="color:#FFDEAD">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#" style="color:#FFDEAD">Рейтинг пользователей</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" style="color:#FFDEAD"><b>Начать игру</b></a>
+                    </li>
+                  </ul>
+                {% if current_user.is_authenticated %}
+                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:#FFDEAD; margin-right:30px;" >
+                        <b>{{ current_user.name }}</b>
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-lg-end" style="background-color: #FFDEAD">
+                        <li><a class="dropdown-item" href="#"><h6 align="center">Время с регистрации</h6></a></li>
+                          <li><a class="dropdown-item" href="#"><h6 align="center">Рейтинг?</h6></a></li>
+                          <li><a class="dropdown-item" href="#"><h6 align="center">Рейтинг?</h6></a></li>
+                          <li><a class="dropdown-item" href="#"><h6 align="center">Рейтинг?</h6></a></li>
+                          <li><a class="dropdown-item" href="#"><h6 align="center">Рейтинг?</h6></a></li>
+                          <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/logout"><h6 align="center">Выйти</h6></a></li>
+                      </ul>
+                {% else %}
+                    <p>
+                        <a class="btn btn-dark" href="/register" style="background-color: #FFDEAD; color:#181618;"><b>Зарегистрироваться</b></a>
+                        <a class="btn btn-dark" href="/login" style="background-color: #FFDEAD; color:#181618;"><b>Войти</b></a>
+                    </p>
+                {% endif %}
+                </div>
+              </div>
+            </nav>
+        </header>
+        <div>{% block content %}{% endblock %}</div>
+    </body>
+</html>

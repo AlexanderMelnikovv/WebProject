@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-top:30px;">
+    <h1 align="center">Авторизация</h1>
+<div id="queen"><img src="/static/img/queen.png" alt="" width="209" height=500" align="right"/></div>
+<div id="king"><img src="/static/img/king.png" alt="" width="209" height=500" align="right"/></div>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            <b>{{ form.email.label }}</b><br>
+            {{ form.email(class="form-control", type="email") }}<br>
+            {% for error in form.email.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>
+            <b>{{ form.password.label }}</b><br>
+            {{ form.password(class="form-control", type="password") }}<br>
+            {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p><b>{{ form.remember_me() }} {{ form.remember_me.label }}</b></p>
+        <p>{{ form.submit(type="submit", class="btn btn-dark", style="color:#FFDEAD;") }}</p>
+        <div>{{ message }}</div>
+    </form></div>
+{% endblock %}

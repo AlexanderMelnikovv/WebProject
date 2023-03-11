@@ -1,0 +1,175 @@
+*, *:after, *:before {
+	border-box;
+	box-sizing: border-box;
+}
+.clearfix:before, .clearfix:after {
+	content: '';
+}
+.clearfix:after {
+	clear: both;
+}
+.hover-text-one {
+	overflow: hidden;
+	margin: 0;
+	list-style: none;
+}
+.hover-text-one figure {
+	position: relative;
+	z-index: 1;
+	display: inline-block;
+	overflow: hidden;
+	background: #527c82;
+	cursor: pointer;
+}
+.hover-text-one figure img {
+	position: relative;
+	display: block;
+	min-height: 100%;
+	opacity: 0.8;
+}
+.hover-text-one figure figcaption {
+	padding: 2em;
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 1.25em;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+.hover-text-one figure figcaption::before,
+.hover-text-one figure figcaption::after {
+	pointer-events: none;
+}
+.hover-text-one figure figcaption{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.hover-text-one figure h3 {
+	word-spacing: -0.15em;
+	font-weight: 300;
+}
+.hover-text-one figure h3 span {
+	font-weight: 800;
+}
+.hover-text-one figure h3,
+.hover-text-one figure p {
+	margin: 0;
+}
+.hover-text-one figure p {
+	letter-spacing: 1px;
+	font-size: 68.5%;
+}
+
+figure.effect-text-four figcaption {
+	text-align: right;
+}
+figure.effect-text-four h3,
+figure.effect-text-four p {
+	position: absolute;
+	right: 30px;
+	left: 30px;
+	padding: 10px 0;
+}
+figure.effect-text-four p {
+	bottom: 30px;
+	line-height: 1.5;
+	-webkit-transform: translate3d(0,100%,0);
+	transform: translate3d(0,100%,0);
+}
+figure.effect-text-four h3 {
+	top: 30px;
+	-webkit-transition: -webkit-transform 0.35s;
+	transition: transform 0.35s;
+	-webkit-transform: translate3d(0,20px,0);
+	transform: translate3d(0,20px,0);
+}
+figure.effect-text-four:hover h3 {
+	-webkit-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+}
+figure.effect-text-four h3::after {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+	height: 4px;
+	background: #fff;
+	content: '';
+	-webkit-transform: translate3d(0,40px,0);
+	transform: translate3d(0,40px,0);
+}
+figure.effect-text-four h3::after,
+figure.effect-text-four p {
+	opacity: 0;
+	-webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+	transition: opacity 0.35s, transform 0.35s;
+}
+figure.effect-text-four:hover h3::after,
+figure.effect-text-four:hover p {
+	opacity: 1;
+	-webkit-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+}
+
+form {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    max-width: 550px;
+    border-radius: 5px;
+    padding: 10px;
+    height: 700px;
+}
+
+#description { position: absolute; }
+#description { overflow: auto; padding: 10px; }
+#description {
+    width: 640px;
+    border-right: 2px solid #231F20;
+    height: 690px;
+    top: 170px;
+    left: 20px;
+    bottom: 0;}
+.change-color-link{
+  color: #181618;
+  text-decoration: none;
+  -webkit-transition: all 1s ease;
+          transition: all 1s ease;
+}
+.change-color-link:hover{
+  color: #FFDEAD;
+}
+#pawn1 { position: absolute; }
+#pawn1 { overflow: auto; padding: 10px; }
+#pawn1 {
+    width: 640px;
+    height: 690px;
+    top: 165px;
+    left: 50px;
+    bottom: 0;}
+#pawn2 { position: absolute; }
+#pawn2 { overflow: auto; padding: 10px; }
+#pawn2 {
+    width: 640px;
+    height: 690px;
+    top: 165px;
+    left: 1240px;
+    bottom: 0;}
+#queen { position: absolute; }
+#queen { overflow: auto; padding: 10px; }
+#queen {
+    width: 209px;
+    height: 520px;
+    top: 109px;
+    left: 360px;
+    bottom: 0;}
+#king { position: absolute; }
+#king { overflow: auto; padding: 10px; }
+#king {
+    width: 220px;
+    height: 520px;
+    top: 105px;
+    left: 1290px;
+    bottom: 0;}

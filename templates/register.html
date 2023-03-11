@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="pawn1"><img src="/static/img/pawn1.png" alt="" width="700" height=667" align="right"/></div>
+<div id="pawn2"><img src="/static/img/pawn2.png" alt="" width="700" height=667" align="right"/></div>
+<div align="center" style="margin-top:30px;">
+<h1>Регистрация</h1>
+<form action="" method="post" >
+    {{ form.hidden_tag() }}
+    <p>
+        <b>{{ form.surname.label }}</b><br>
+        {{ form.surname(class="form-control") }}<br>
+        {% for error in form.surname.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        <b>{{ form.name.label }}</b><br>
+        {{ form.name(class="form-control") }}<br>
+        {% for error in form.name.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        <b>{{ form.email.label }}</b><br>
+        {{ form.email(class="form-control", type="email") }}<br>
+        {% for error in form.email.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        <b>{{ form.password.label }}</b><br>
+        {{ form.password(class="form-control", type="password") }}<br>
+        {% for error in form.password.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        <b>{{ form.password_again.label }}</b><br>
+        {{ form.password_again(class="form-control", type="password") }}<br>
+        {% for error in form.password_again.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-dark", style="color:#FFDEAD;") }}</p>
+    {{message}}
+</form>
+</div>
+{% endblock %}
