@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="pawn1"><img src="/static/img/pawn1.png" alt="" width="700" height=667" align="right"/></div>
-<div id="pawn2"><img src="/static/img/pawn2.png" alt="" width="700" height=667" align="right"/></div>
-<div align="center" style="margin-top:30px;">
-<h1>Регистрация</h1>
-<form action="" method="post" >
+<table id="register">
+<tr><td id="pawn1"><img src="/static/img/pawn1.png" alt="" width="500" height=667" align="right"/></td>
+<td id="rform"><form action="" method="post" >
+    <h1 align="center">Регистрация</h1>
     {{ form.hidden_tag() }}
-    <p>
+    <p align="center">
         <b>{{ form.surname.label }}</b><br>
         {{ form.surname(class="form-control") }}<br>
         {% for error in form.surname.errors %}
@@ -16,7 +15,7 @@
             </p>
         {% endfor %}
     </p>
-    <p>
+    <p align="center">
         <b>{{ form.name.label }}</b><br>
         {{ form.name(class="form-control") }}<br>
         {% for error in form.name.errors %}
@@ -25,7 +24,7 @@
             </p>
         {% endfor %}
     </p>
-    <p>
+    <p align="center">
         <b>{{ form.email.label }}</b><br>
         {{ form.email(class="form-control", type="email") }}<br>
         {% for error in form.email.errors %}
@@ -34,7 +33,7 @@
             </p>
         {% endfor %}
     </p>
-    <p>
+    <p align="center">
         <b>{{ form.password.label }}</b><br>
         {{ form.password(class="form-control", type="password") }}<br>
         {% for error in form.password.errors %}
@@ -43,7 +42,7 @@
             </p>
         {% endfor %}
     </p>
-    <p>
+    <p align="center">
         <b>{{ form.password_again.label }}</b><br>
         {{ form.password_again(class="form-control", type="password") }}<br>
         {% for error in form.password_again.errors %}
@@ -52,8 +51,9 @@
             </p>
         {% endfor %}
     </p>
-    <p>{{ form.submit(type="submit", class="btn btn-dark", style="color:#FFDEAD;") }}</p>
+    <p align="center">{{ form.submit(type="submit", class="btn btn-dark", style="color:#FFDEAD;") }}</p>
     {{message}}
-</form>
-</div>
+</form></td>
+<td id="pawn2"><img src="/static/img/pawn2.png" alt="" width="500" height=667" /></td>
+    </tr></table>
 {% endblock %}
