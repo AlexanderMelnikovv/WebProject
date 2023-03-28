@@ -124,11 +124,12 @@ form {
 #description { position: absolute; }
 #description { overflow: auto; padding: 10px; }
 #description {
-    width: 640px;
+    width: 37%;
     border-right: 2px solid #231F20;
-    height: 690px;
+    height: 80%;
     top: 170px;
     left: 20px;
+    font-size: 3vh;
     bottom: 0;}
 .change-color-link{
   color: #181618;
@@ -160,4 +161,31 @@ form {
 }
 #rform{
     width: 600px;
+}
+#animation
+  {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  }
+
+.dropdown-item:active{
+ color: #FFDEAD;
+ background-color: #181618;
+ }
+
+ ::selection{
+    color: #FFDEAD;
+    background-color: #181618;
+}
+
+#rating {
+    font-size: 1.3vw;
+    color: #181618;
+    width: 70%;
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;}
+#ratind_th {
+    border: 3px solid #212121;
 }
