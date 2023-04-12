@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/style1.css')}}"/>
+    <?xml-stylesheet type="text/css" href="svgstyle.css"?>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+<div class="board">
+    <img src="{{url_for('static', filename='img/photo_board.svg')}}" width=720px height=720px>
+</div>
+<div class="rule">
+    <h1>Введите свой ход по правилам шахматной нотации. Если вы не знаете, что это такое, </h1>
+    <h1>то переходите на наш телеграм канал: https://t.me/ChessStrateg_bot</h1>
+</div>
+<div class="form">
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.move.label }}<br>
+        {{ form.move(class="form-control") }}<br>
+        {% for error in form.move.errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+</form>
+</div>
+</body>
+</html>
