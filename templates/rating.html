@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table id="rating" style="border: 1px solid grey;">
+<tr align="center" style="background-color: #181618; color: #FFDEAD;"><th id="ratind_th" style="width: 10%;">Место</th><th id="ratind_th">Логин</th><th id="ratind_th" style="width: 15%">Рейтинг</th></tr>
+{% for i in rating %}
+   <tr align="center"><td id="ratind_th">{{ i[0] }}</td><td id="ratind_th">{{ i[1] }}</td><td id="ratind_th">{{ i[2] }}</td></tr>
+{% endfor %}
+</table>
+{% endblock %}

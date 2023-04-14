@@ -29,7 +29,7 @@
                       <a class="nav-link active" aria-current="page" href="/" style="color:#FFDEAD">Главная</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#" style="color:#FFDEAD">Рейтинг пользователей</a>
+                      <a class="nav-link" href="/rating" style="color:#FFDEAD">Рейтинг пользователей</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/start_game" style="color:#FFDEAD"><b>Начать игру</b></a>
@@ -37,16 +37,16 @@
                   </ul>
                 {% if current_user.is_authenticated %}
                       <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:#FFDEAD; margin-right:30px;" >
-                        <b>{{ current_user.name }}</b>
+                        <b>{{ current_user.username }}</b>
                       </a>
                       <ul class="dropdown-menu dropdown-menu-lg-end" style="background-color: #FFDEAD">
-                        <li><a class="dropdown-item" href="#"><h6 align="center">Время с регистрации</h6></a></li>
-                          <li><a class="dropdown-item" href="#"><h6 align="center">Рейтинг?</h6></a></li>
-                          <li><a class="dropdown-item" href="#"><h6 align="center">Рейтинг?</h6></a></li>
-                          <li><a class="dropdown-item" href="#"><h6 align="center">Рейтинг?</h6></a></li>
-                          <li><a class="dropdown-item" href="#"><h6 align="center">Рейтинг?</h6></a></li>
+                          <li><a class="dropdown-item" href="#"><h6 align="center"><b>Мои игры</b></h6></a></li>
+                        <li><a class="dropdown-item disabled"><h6 align="center" style="color: black">Время с регистрации: <b style="color: black">{{ hours }}</b>ч.</h6></a></li>
+                          <li><a class="dropdown-item disabled"><h6 align="center" style="color: black">Количество очков: <b style="color: black">{{ rating.points }}</b></h6></a></li>
+                          <li><a class="dropdown-item disabled"><h6 align="center" style="color: black">Количество побед: <b style="color: black">{{ rating.wins }}</b></h6></a></li>
+                          <li><a class="dropdown-item disabled"><h6 align="center" style="color: black">Количество поражений: <b style="color: black">{{ rating.losses }}</b></h6></a></li>
                           <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="/logout"><h6 align="center">Выйти</h6></a></li>
+                        <li><a class="dropdown-item" href="/logout"><h5 align="center">Выйти</h5></a></li>
                       </ul>
                 {% else %}
                     <p>
