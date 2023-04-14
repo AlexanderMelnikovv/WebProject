@@ -173,3 +173,18 @@ form {
     top: 105px;
     left: 1290px;
     bottom: 0;}
+
+.rule {
+    margin-left: 800px;
+    margin-bottom: 150px;
+}
+
+.board {
+    float: left;
+}
+
+
+.form {
+    margin-left: 1000px;
+    margin-bottom: 100px;
+}
