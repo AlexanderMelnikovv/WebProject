@@ -189,3 +189,18 @@ form {
 #ratind_th {
     border: 3px solid #212121;
 }
+
+.rule {
+    margin-left: 800px;
+    margin-bottom: 150px;
+}
+
+.board {
+    float: left;
+}
+
+
+.form {
+    margin-left: 800px;
+    margin-bottom: 50px;
+}

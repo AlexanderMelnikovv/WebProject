@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" type="text/css"
-          href="{{url_for('static', filename='css/style1.css')}}"/>
-    <?xml-stylesheet type="text/css" href="svgstyle.css"?>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
+<?xml-stylesheet type="text/css" href="svgstyle.css"?>
 <div class="board">
     <img src="{{url_for('static', filename='img/photo_board.svg')}}" width=720px height=720px>
 </div>
@@ -30,5 +24,5 @@
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
 </form>
 </div>
-</body>
-</html>
+
+{% endblock %}
