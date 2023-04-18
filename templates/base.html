@@ -32,7 +32,13 @@
                       <a class="nav-link" href="/rating" style="color:#FFDEAD">Рейтинг пользователей</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/start_game" style="color:#FFDEAD"><b>Начать игру</b></a>
+                        <div class="dropdown"><a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" style="color:#FFDEAD"><b>Начать игру</b></a>
+                            <ul class="dropdown-menu bg-dark">
+                                <li><a class="dropdown-item" href="/start_game/1" type="button" style="color: #FFDEAD;">легкий уровень</a></li>
+                                <li><a class="dropdown-item" href="/start_game/2" type="button" style="color: #FFDEAD;">средний уровень</a></li>
+                                <li><a class="dropdown-item" href="/start_game/3" type="button" style="color: #FFDEAD;">сложный уровень</a></li>
+                            </ul>
+                        </div>
                     </li>
                   </ul>
                 {% if current_user.is_authenticated %}

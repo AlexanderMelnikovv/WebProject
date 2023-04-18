@@ -204,3 +204,9 @@ form {
     margin-left: 800px;
     margin-bottom: 50px;
 }
+
+.dropdown-item:hover
+{
+    color: #FFDEAD;
+    background-color: #181618;
+}

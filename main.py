@@ -29,8 +29,8 @@ def is_correct_move(move, board):
     return False
 
 
-@app.route('/start_game', methods=['GET', 'POST'])
-def display_field():
+@app.route('/start_game/<int:level>', methods=['GET', 'POST'])
+def display_field(level):
     form = MoveForm()
     board_svg = chess.svg.board(board=board)
     field_file = open('static/img/photo_board.svg', "w")
