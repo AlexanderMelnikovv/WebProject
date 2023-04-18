@@ -2,15 +2,15 @@
 
 {% block content %}
 <?xml-stylesheet type="text/css" href="svgstyle.css"?>
-<div class="board">
+<div class="board" style="float: left;">
     <img src="{{url_for('static', filename='img/photo_board.svg')}}" width=720px height=720px>
 </div>
-<div class="rule">
+<div class="rule" style="margin-left: 800px; margin-bottom: 150px;">
     <h1>Введите свой ход по правилам шахматной нотации. Если вы не знаете, что это такое, </h1>
     <h1>то переходите на наш телеграм канал: https://t.me/ChessStrateg_bot</h1>
 </div>
 <div class="form">
-<form action="" method="post" novalidate>
+<form action="" method="post" novalidate style="margin-left: 800px; margin-bottom: 50px;">
     {{ form.hidden_tag() }}
     <p>
         {{ form.move.label }}<br>
