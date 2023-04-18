@@ -30,6 +30,8 @@ def is_correct_move(move, board):
 
 
 def get_rating():
+    global board
+    board = chess.Board()
     try:
         id = current_user.id
         db_sess = db_session.create_session()
@@ -78,12 +80,16 @@ def display_field(level):
 
 
 def main():
+    global board
+    board = chess.Board()
     db_session.global_init("db/game_of_chess.db")
     app.run()
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    global board
+    board = chess.Board()
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -99,18 +105,24 @@ def login():
 
 @login_manager.user_loader
 def load_user(user_id):
+    global board
+    board = chess.Board()
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
 
 @app.route("/")
 def index():
+    global board
+    board = chess.Board()
     rating, hours = get_rating()
     return render_template("index.html", rating=rating, title='Главная страница', hours=hours)
 
 
 @app.route("/rating")
 def ratings():
+    global board
+    board = chess.Board()
     db_sess = db_session.create_session()
     ratings_users = db_sess.query(Rating).order_by(Rating.points.desc()).all()
     n = len(list(ratings_users))
@@ -126,6 +138,8 @@ def ratings():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    global board
+    board = chess.Board()
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -159,6 +173,8 @@ def register():
 @app.route('/logout')
 @login_required
 def logout():
+    global board
+    board = chess.Board()
     logout_user()
     return redirect("/")
 
