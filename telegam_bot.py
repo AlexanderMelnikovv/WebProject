@@ -6,7 +6,22 @@ import json
 import random
 import pymorphy2
 
-count_puzzle = 1
+
+async def solving_puzzles(update, context):
+    cnt = 1
+    chat_id = update.effective_message.chat_id
+    if cnt > 20:
+        await update.message.reply_text('К сожалению, на данный момент больше нет задач. Но'
+                                        ' со временем они будут добавляться!')
+    await context.bot.sendPhoto(chat_id, photo=f'puzzles/puzzle_{cnt}.png')
+    if cnt % 2 == 1:
+        await update.message.reply_text(f'Найди лучший ход за белых')
+    else:
+        await update.message.reply_text(f'Найди лучший ход за чёрных')
+    reply_keyboard = [['Ввести ход', 'Следующая задача'], ['Показать ответ']]
+    markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
+    await update.message.reply_text('Введи ход в формате <клетка-клетка>', reply_markup=markup)
+    cnt += 1
 
 
 async def get_help(update, context):
@@ -16,28 +31,11 @@ async def get_help(update, context):
                                     'после решения задач в партии сможете найти блестящий ход, '
                                     'который приведёт к победе.\n'
                                     '/training\n/chess_players\n/chess_dictionary\n'
-                                    '/timer\n/interesting_facts\n/chess_debuts')
+                                    '/timer\n/interesting_facts\n/chess_debuts\n/solving_puzzles')
 
 
 async def empty_function(update, context):
     await update.message.reply_text('Я не понимаю...')
-
-
-async def solve_puzzle(update, context):
-    global count_puzzle
-    chat_id = update.effective_message.chat_id
-    if count_puzzle > 10:
-        await update.message.reply_text('К сожалению, на данный момент больше нет задач. Но'
-                                        ' со временем они будут добавляться!')
-    await context.bot.sendPhoto(chat_id, photo=f'puzzle_{count_puzzle}.png')
-    if count_puzzle % 2 == 1:
-        await update.message.reply_text(f'Найди лучший ход за белых')
-    else:
-        await update.message.reply_text(f'Найди лучший ход за чёрных')
-    reply_keyboard = [['/a', '/b', '/c'], ['/d', '/e', '/f']]
-    markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
-    await update.message.reply_text(reply_markup=markup)
-    count_puzzle += 1
 
 
 async def chess_players(update, context):
@@ -127,7 +125,7 @@ async def chess_dictionary(update, context):
                                     'Введите запрос вида "Что такое <термин>?"\n'
                                     'И, если в словаре запрос найдется, вы увидите определение.'
                                     'Если нет, вы увидите соответствующее сообщение.\n'
-                                    'Все термины, которые есть в словаре, дотупны при вводе'
+                                    'Все термины, которые есть в словаре, доступны при вводе'
                                     ' "все термины"!')
     return 3
 
@@ -254,7 +252,7 @@ async def debuts(update, context):
     if req in ['Открытые дебюты', 'Полуоткрытые дебюты', 'Закрытые и полузакрытые дебюты',
                'Шахматные гамбиты']:
         arr = context.user_data['debuts'][req].keys()
-        list_debuts = f'На данный момент в разделе "{req}" доступны такие дебюты:' + " \n \u2714"\
+        list_debuts = f'На данный момент в разделе "{req}" доступны такие дебюты:' + " \n \u2714" \
                       + "\n \u2714".join(arr)
         await update.message.reply_text(list_debuts)
         context.user_data['now_chapter'] = req
@@ -288,10 +286,10 @@ def main():
                    CommandHandler("chess_dictionary", chess_dictionary),
                    CommandHandler("timer", timer),
                    CommandHandler("interesting_facts", interesting_facts),
-                   CommandHandler("chess_debuts", chess_debuts)])
+                   CommandHandler("chess_debuts", chess_debuts),
+                   CommandHandler("solving_puzzles", solving_puzzles)])
     application.add_handler(conv_handler)
     application.add_handler(CommandHandler('help', get_help))
-    application.add_handler(CommandHandler('solve_puzzle', solve_puzzle))
     application.run_polling()
 
 
