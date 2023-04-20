@@ -45,7 +45,7 @@ async def solve_puzzle(update, context):
         await update.message.reply_text(f'Найди лучший ход за белых')
     else:
         await update.message.reply_text(f'Найди лучший ход за чёрных')
-    reply_keyboard = [['/a', '/b', '/c'], ['/d', '/e', '/f']]
+    reply_keyboard = [['Ввести ход'], ['/d', '/e', '/f']]
     markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
     await update.message.reply_text(reply_markup=markup)
     count_puzzle += 1

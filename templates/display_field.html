@@ -10,19 +10,24 @@
     <h1>пойти, потом - конечная клетка. Клетка обозначается буквой от a до h и цифрой от 1 до 8</h1>
     <h1>Пример: e2e4. При некорректном ходе ничего не произойдёт</h1>
 </div>
+<div class="check" style="margin-left: 1100px;">
+    {% if check == True %}
+        <h1 style="color: #FF6600;">ШАХ!</h1>
+    {% endif %}
+</div>
 <div class="ending" style="margin-left: 1000px;">
 {% if lose == True %}
-    <h1>Ты проиграл</h1>
+    <h1 style="color: #FF0000;">Ты проиграл</h1>
 {% endif %}
 {% if win == True %}
-    <h1>Ты выиграл!</h1>
+    <h1 style="color: #008000;">Ты выиграл!</h1>
 {% endif %}
 {% if draw == True %}
-    <h1>Ничья</h1>
+    <h1 style="color: #804030;">Ничья</h1>
 {% endif %}
 </div>
 <div class="form">
-<form action="" method="post" novalidate style="margin-left: 800px; margin-bottom: 50px;">
+<form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <p>
         {{ form.move.label }}<br>
@@ -33,7 +38,7 @@
     </div>
     {% endfor %}
     </p>
-    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    <p>{{ form.submit(type="submit", class="btn btn-dark", style="color:#FFDEAD;") }}</p>
 </form>
 </div>
 
