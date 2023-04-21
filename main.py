@@ -136,6 +136,7 @@ def display_field(level):
                                 rating.points -= 20
                             elif level == 3:
                                 rating.points -= 5
+                        rating.points = max(0, rating.points)
                         db_sess.commit()
                         return render_template('display_field.html', title='Игра', form=form,
                                                rating=rating,
