@@ -17,7 +17,6 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     rating = orm.relationship("Rating", back_populates='user')
-    games = orm.relationship("Games", back_populates='user')
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

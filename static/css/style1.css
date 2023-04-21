@@ -200,9 +200,10 @@ form {
 }
 
 
-.form {
+#game {
     margin-left: 800px;
     margin-bottom: 50px;
+    height: 100px;
 }
 
 .dropdown-item:hover
@@ -210,3 +211,22 @@ form {
     color: #FFDEAD;
     background-color: #181618;
 }
+.form input:focus {
+  color: #181618;
+  background-color: #fff;
+  border-color: #bdbdbd;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(24, 22, 24, 0.25);
+}
+#rform input:focus {
+  color: #181618;
+  background-color: #fff;
+  border-color: #bdbdbd;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(24, 22, 24, 0.25);}
+#lform input:focus {
+  color: #181618;
+  background-color: #fff;
+  border-color: #bdbdbd;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(24, 22, 24, 0.25);}
