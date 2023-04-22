@@ -59,7 +59,7 @@ def display_field(level):
         my_stockfish.set_skill_level(8)
     else:
         my_stockfish.set_skill_level(1)
-    global end_game
+    global end_game, board
     if not current_user.is_authenticated:
         return redirect("/")
     if not end_game:
@@ -150,6 +150,14 @@ def display_field(level):
                         return render_template('display_field.html', title='Игра', form=form,
                                                rating=rating,
                                                hours=hours, check=True)
+                else:
+                    if form.move.data == 'reset':
+                        board = chess.Board()
+                        board_svg = chess.svg.board(board=board)
+                        field_file = open('static/img/photo_board.svg', "w")
+                        field_file.write(board_svg)
+                        return render_template('display_field.html', title='Игра', form=form,
+                                               rating=rating, hours=hours)
             return render_template('display_field.html', title='Игра', form=form, rating=rating,
                                    hours=hours)
 
