@@ -1,0 +1,9 @@
+pymorphy2==0.9.1
+Flask==2.2.2
+chess==1.9.4
+stockfish==3.28.0
+python-telegram-bot==20.2
+Flask-Login==0.6.2
+SQLAlchemy==2.0.4
+SQLAlchemy-serializer==1.4.1
+Flask-WTF==1.1.1
