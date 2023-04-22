@@ -8,20 +8,57 @@ import pymorphy2
 
 
 async def solving_puzzles(update, context):
-    cnt = 1
+    cnt = context.user_data['cnt']
     chat_id = update.effective_message.chat_id
     if cnt > 20:
         await update.message.reply_text('К сожалению, на данный момент больше нет задач. Но'
-                                        ' со временем они будут добавляться!')
-    await context.bot.sendPhoto(chat_id, photo=f'puzzles/puzzle_{cnt}.png')
+                                        ' со временем они будут добавляться!',
+                                        reply_markup=ReplyKeyboardRemove())
+        return 0
     if cnt % 2 == 1:
-        await update.message.reply_text(f'Найди лучший ход за белых')
+        await context.bot.sendPhoto(chat_id, photo=f'static/img/puzzles/puzzle_{cnt}.png',
+                                    caption='Найди лучший ход за белых')
     else:
-        await update.message.reply_text(f'Найди лучший ход за чёрных')
-    reply_keyboard = [['Ввести ход', 'Следующая задача'], ['Показать ответ']]
-    markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
+        await context.bot.sendPhoto(chat_id, photo=f'static/img/puzzles/puzzle_{cnt}.png',
+                                    caption='Найди лучший ход за чёрных')
+    reply_keyboard = [['Следующая задача'], ['Показать ответ']]
+    markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False, resize_keyboard=True)
     await update.message.reply_text('Введи ход в формате <клетка-клетка>', reply_markup=markup)
-    cnt += 1
+    return 7
+
+
+async def puzzles(update, context):
+    cnt = context.user_data['cnt']
+    answer = context.user_data['solving_puzzles'][str(cnt)][0]
+    req = update.message.text.strip().lower()
+    chat_id = update.effective_message.chat_id
+    if req == 'следующая задача':
+        context.user_data['cnt'] += 1
+        cnt = context.user_data['cnt']
+        if context.user_data['cnt'] > 20:
+            await update.message.reply_text('К сожалению, на данный момент больше нет задач. Но'
+                                            ' со временем они будут добавляться!',
+                                            reply_markup=ReplyKeyboardRemove())
+            return 0
+        if cnt % 2 == 1:
+            await context.bot.sendPhoto(chat_id, photo=f'static/img/puzzles/puzzle_{cnt}.png',
+                                        caption='Найди лучший ход за белых')
+        else:
+            await context.bot.sendPhoto(chat_id, photo=f'static/img/puzzles/puzzle_{cnt}.png',
+                                        caption='Найди лучший ход за чёрных')
+    elif req == 'показать ответ':
+        await update.message.reply_text(f'Правильный ответ: {answer}.'
+                                        f' {context.user_data["solving_puzzles"][str(cnt)][1]}')
+    else:
+        if len(req.split('-')) != 2:
+            await update.message.reply_text(f'Введи ход в формате <клетка-клетка>')
+        else:
+            if req == answer:
+                n = str(cnt)
+                await update.message.reply_text(f'Да, это правильный ответ!'
+                                                f' {context.user_data["solving_puzzles"][n][1]}')
+            else:
+                await update.message.reply_text('Неверно. Попробуйте еще.')
 
 
 async def get_help(update, context):
@@ -29,9 +66,8 @@ async def get_help(update, context):
                                     'своих навыков решения шахматных задач. Это '
                                     'очень хорошо помогает в игре. Вы почувствуете это сами, когда '
                                     'после решения задач в партии сможете найти блестящий ход, '
-                                    'который приведёт к победе.\n'
-                                    '/training\n/chess_players\n/chess_dictionary\n'
-                                    '/timer\n/interesting_facts\n/chess_debuts\n/solving_puzzles')
+                                    'который приведёт к победе. А список всех функций вы можете'
+                                    ' найти в меню.')
 
 
 async def empty_function(update, context):
@@ -126,7 +162,7 @@ async def chess_dictionary(update, context):
                                     'И, если в словаре запрос найдется, вы увидите определение.'
                                     'Если нет, вы увидите соответствующее сообщение.\n'
                                     'Все термины, которые есть в словаре, доступны при вводе'
-                                    ' "все термины"!')
+                                    ' "все термины"!', reply_markup=ReplyKeyboardRemove())
     return 3
 
 
@@ -156,12 +192,18 @@ async def start(update, context):
         dict = data['chess_dictionary']
         facts = data['interesting_facts']
         debuts = data['debuts']
+        puzzles = data['solving_puzzles']
     context.user_data['chess_players'] = players
     context.user_data['chess_training'] = training
     context.user_data['chess_dictionary'] = dict
     context.user_data['interesting_facts'] = facts
     context.user_data['debuts'] = debuts
-    await update.message.reply_text('Привет', reply_markup=ReplyKeyboardRemove())
+    context.user_data['solving_puzzles'] = puzzles
+    context.user_data['cnt'] = 1
+    await update.message.reply_text('Я бот Стратег. Я могу рассказать вам многое о шахматах,'
+                                    ' игроках, научить вас играть и'
+                                    ' потренировать ваше навыки в игре! Все функции доступны'
+                                    ' в меню!', reply_markup=ReplyKeyboardRemove())
     return 0
 
 
@@ -235,9 +277,9 @@ async def chess_debuts(update, context):
                                     " со стороны чёрных. Закрытые дебюты — дебюты,"
                                     " где первый ход белых не 1. e2-e4.\n"
                                     "Гамбит – разновидность дебюта, или дебютный вариант,"
-                                    " в котором один из игроков готов настии материальные"
-                                    " жертвы ради достижении своих целей.\n"
-                                    "В данной функции у васе есть возможность познакомиться"
+                                    " в котором один из игроков готов нести материальные"
+                                    " жертвы ради достижения своих целей.\n"
+                                    "В данной функции у вас есть возможность познакомиться"
                                     " с некоторыми примерами каждого вида."
                                     " Для этого нажмите на кнопку интересующего вида."
                                     " Вам будет предоставлен список.\n"
@@ -279,7 +321,8 @@ def main():
             3: [MessageHandler(filters.TEXT & ~filters.COMMAND, search_terms)],
             4: [MessageHandler(filters.TEXT & ~filters.COMMAND, start_timer)],
             5: [MessageHandler(filters.TEXT & ~filters.COMMAND, random_fact)],
-            6: [MessageHandler(filters.TEXT & ~filters.COMMAND, debuts)]
+            6: [MessageHandler(filters.TEXT & ~filters.COMMAND, debuts)],
+            7: [MessageHandler(filters.TEXT & ~filters.COMMAND, puzzles)]
         },
         fallbacks=[CommandHandler("training", training),
                    CommandHandler("chess_players", chess_players),
