@@ -11,6 +11,7 @@ from stockfish import Stockfish
 import chess
 import chess.svg
 from forms.input_move_form import MoveForm
+import os
 
 app = Flask(__name__)
 api = Api(app)
@@ -206,6 +207,39 @@ def login():
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
+
+
+@app.route('/make_field_by_moves')
+def make_field_by_moves():
+    return render_template('upload_file.html')
+
+
+@app.route('/success', methods=['POST'])
+def success():
+    if request.method == 'POST':
+        f = request.files['file']
+        if f.filename[-3:] == 'txt':
+            test_board = chess.Board()
+            f.save(f.filename)
+            with open(f.filename, 'r', encoding='utf-8') as file:
+                data = file.readlines()
+            os.remove(f.filename)
+            for move in data:
+                move = move.strip()
+                try:
+                    corr_move = chess.Move.from_uci(move)
+                    if corr_move in list(test_board.legal_moves):
+                        test_board.push(corr_move)
+                    else:
+                        return render_template("field_by_moves.html", error=2)
+                except:
+                    return render_template("field_by_moves.html", error=2)
+            board_svg = chess.svg.board(board=test_board)
+            field_file = open('static/img/board_by_moves.svg', "w")
+            field_file.write(board_svg)
+            return render_template("field_by_moves.html", error=0)
+        else:
+            return render_template("field_by_moves.html", error=1)
 
 
 @app.route("/")

@@ -1,0 +1,16 @@
+<html>
+<head>
+   <?xml-stylesheet type="text/css" href="svgstyle.css"?>
+</head>
+<body>
+   {% if error == 2 %}
+      <h1 style="color: red;">Присутствуют некорректные ходы</h1>
+   {% endif %}
+   {% if error == 1 %}
+      <h1 style="color: red;">Некорректное расширение</h1>
+   {% endif %}
+   {% if error == 0 %}
+      <img src="{{url_for('static', filename='img/board_by_moves.svg')}}" width=720px height=720px>
+   {% endif %}
+</body>
+</html>
