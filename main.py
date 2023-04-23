@@ -64,6 +64,18 @@ def display_field(level):
         my_stockfish.set_skill_level(1)
     if not current_user.is_authenticated:
         return redirect("/")
+    try:
+        if games_dict[id][3] != level:
+            if board != chess.Board():
+                board = chess.Board()
+                board_svg = chess.svg.board(board=board)
+                field_file = open(f'static/img/photo_board{id}.svg', "w")
+                field_file.write(board_svg)
+                games_dict[id] = [board, my_stockfish, end_game]
+            else:
+                games_dict[id][3] = level
+    except Exception:
+        games_dict[id].append(level)
     photo = url_for('static', filename=f'img/photo_board{id}.svg')
     if not end_game:
         form = MoveForm()
