@@ -22,6 +22,9 @@ games_dict = {}
 
 
 def is_correct_move(move, board):
+    test_move = chess.Move.from_uci('e1h1')
+    if board.is_legal(test_move):
+        return True
     for x in list(board.legal_moves):
         if move == str(x):
             return True
