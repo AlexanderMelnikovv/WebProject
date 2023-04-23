@@ -223,11 +223,13 @@ def load_user(user_id):
 
 @app.route('/make_field_by_moves')
 def make_field_by_moves():
-    return render_template('upload_file.html')
+    rating, hours = get_rating()
+    return render_template('upload_file.html', rating=rating, title='Составление поля', hours=hours)
 
 
 @app.route('/success', methods=['POST'])
 def success():
+    rating, hours = get_rating()
     if request.method == 'POST':
         f = request.files['file']
         if f.filename[-3:] == 'txt':
@@ -243,15 +245,19 @@ def success():
                     if corr_move in list(test_board.legal_moves):
                         test_board.push(corr_move)
                     else:
-                        return render_template("field_by_moves.html", error=2)
+                        return render_template("field_by_moves.html", error=2,
+                                               rating=rating, title='Составление поля', hours=hours)
                 except:
-                    return render_template("field_by_moves.html", error=2)
+                    return render_template("field_by_moves.html", error=2,
+                                           rating=rating, title='Составление поля', hours=hours)
             board_svg = chess.svg.board(board=test_board)
             field_file = open('static/img/board_by_moves.svg', "w")
             field_file.write(board_svg)
-            return render_template("field_by_moves.html", error=0)
+            return render_template("field_by_moves.html", error=0, rating=rating,
+                                   title='Составление поля', hours=hours)
         else:
-            return render_template("field_by_moves.html", error=1)
+            return render_template("field_by_moves.html", error=1, rating=rating,
+                                   title='Составление поля', hours=hours)
 
 
 @app.route("/")

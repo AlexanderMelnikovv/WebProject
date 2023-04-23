@@ -1,16 +1,14 @@
-<html>
-<head>
-   <?xml-stylesheet type="text/css" href="svgstyle.css"?>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
    {% if error == 2 %}
-      <h1 style="color: red;">Присутствуют некорректные ходы</h1>
+      <h1 style="color: red; height: 45vw;" align="center" >Присутствуют некорректные ходы</h1>
    {% endif %}
    {% if error == 1 %}
-      <h1 style="color: red;">Некорректное расширение</h1>
+      <h1 style="color: red; height: 45vw;" align="center" >Некорректное расширение</h1>
    {% endif %}
    {% if error == 0 %}
-      <img src="{{url_for('static', filename='img/board_by_moves.svg')}}" width=720px height=720px>
+      <div align="center">
+      <img src="{{url_for('static', filename='img/board_by_moves.svg')}}" width=720px height=720px></div>
    {% endif %}
-</body>
-</html>
+{% endblock %}
