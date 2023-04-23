@@ -6,7 +6,6 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from forms.login import LoginForm
 from data.rating import Rating
 import datetime
-from flask_restful import Api
 from stockfish import Stockfish
 import chess
 import chess.svg
@@ -14,7 +13,6 @@ from forms.input_move_form import MoveForm
 import os
 
 app = Flask(__name__)
-api = Api(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
