@@ -3,7 +3,7 @@
 {% block content %}
 <?xml-stylesheet type="text/css" href="svgstyle.css"?>
 <div class="board" style="float: left;">
-    <img src="{{url_for('static', filename='img/photo_board.svg')}}" width=720px height=720px>
+    <img src='{{ photo }}' width=720px height=720px>
 </div>
 <div class="rule" style="margin-left: 800px; margin-bottom: 150px;">
     <h1>Ход вводится по следующему правилу: сначала пишется клетка, откуда фигура должна </h1>

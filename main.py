@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, abort, jsonify
+from flask import Flask, render_template, redirect, request, abort, jsonify, url_for
 from data import db_session
 from data.users import User
 from forms.user import RegisterForm
@@ -17,10 +17,7 @@ api = Api(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
-board = chess.Board()
-my_stockfish = Stockfish('stockfish_15.1_win_x64_popcnt'
-                         '/stockfish-windows-2022-x86-64-modern.exe')
-end_game = False
+games_dict = {}
 
 
 def is_correct_move(move, board):
@@ -51,6 +48,11 @@ def get_rating():
 
 @app.route('/start_game/<int:level>', methods=['GET', 'POST'])
 def display_field(level):
+    global games_dict
+    id = current_user.id
+    my_stockfish = games_dict[id][1]
+    board = games_dict[id][0]
+    end_game = games_dict[id][2]
     if level == 1:
         my_stockfish.set_skill_level(2)
     elif level == 2:
@@ -59,13 +61,13 @@ def display_field(level):
         my_stockfish.set_skill_level(8)
     else:
         my_stockfish.set_skill_level(1)
-    global end_game, board
     if not current_user.is_authenticated:
         return redirect("/")
+    photo = url_for('static', filename=f'img/photo_board{id}.svg')
     if not end_game:
         form = MoveForm()
         board_svg = chess.svg.board(board=board)
-        field_file = open('static/img/photo_board.svg', "w")
+        field_file = open(f'static/img/photo_board{id}.svg', "w")
         field_file.write(board_svg)
         rating, hours = get_rating()
         while not board.is_checkmate() or not board.is_variant_draw():
@@ -75,7 +77,7 @@ def display_field(level):
                     get_move = chess.Move.from_uci(form.move.data)
                     board.push(get_move)
                     board_svg = chess.svg.board(board=board)
-                    field_file = open('static/img/photo_board.svg', "w")
+                    field_file = open(f'static/img/photo_board{id}.svg', "w")
                     field_file.write(board_svg)
                     if board.is_checkmate():
                         end_game = True
@@ -103,17 +105,19 @@ def display_field(level):
                         db_sess.commit()
                         return render_template('display_field.html', title='Игра', form=form,
                                                rating=rating,
-                                               hours=hours, win=True, lose=False, draw=False)
+                                               hours=hours, win=True, lose=False, draw=False,
+                                               photo=photo)
                     elif board.is_variant_draw():
                         end_game = True
                         return render_template('display_field.html', title='Игра', form=form,
                                                rating=rating,
-                                               hours=hours, draw=True, win=False, lose=False)
+                                               hours=hours, draw=True, win=False, lose=False,
+                                               photo=photo)
                     my_stockfish.set_fen_position(board.fen())
                     best_move = chess.Move.from_uci(my_stockfish.get_best_move())
                     board.push(best_move)
                     board_svg = chess.svg.board(board=board)
-                    field_file = open('static/img/photo_board.svg', "w")
+                    field_file = open(f'static/img/photo_board{id}.svg', "w")
                     field_file.write(board_svg)
                     if board.is_checkmate():
                         end_game = True
@@ -140,26 +144,35 @@ def display_field(level):
                         db_sess.commit()
                         return render_template('display_field.html', title='Игра', form=form,
                                                rating=rating,
-                                               hours=hours, lose=True, win=False, draw=False)
+                                               hours=hours, lose=True, win=False, draw=False,
+                                               photo=photo)
                     elif board.is_variant_draw():
                         end_game = True
                         return render_template('display_field.html', title='Игра', form=form,
                                                rating=rating,
-                                               hours=hours, draw=True, lose=False, win=False)
+                                               hours=hours, draw=True, lose=False, win=False,
+                                               photo=photo)
                     elif board.is_check():
                         return render_template('display_field.html', title='Игра', form=form,
                                                rating=rating,
-                                               hours=hours, check=True)
+                                               hours=hours, check=True,
+                                               photo=photo)
                 else:
                     if form.move.data == 'reset':
                         board = chess.Board()
                         board_svg = chess.svg.board(board=board)
-                        field_file = open('static/img/photo_board.svg', "w")
+                        field_file = open(f'static/img/photo_board{id}.svg', "w")
                         field_file.write(board_svg)
+                        games_dict[id] = [board, my_stockfish, end_game]
                         return render_template('display_field.html', title='Игра', form=form,
-                                               rating=rating, hours=hours)
+                                               rating=rating, hours=hours,
+                                               photo=photo)
             return render_template('display_field.html', title='Игра', form=form, rating=rating,
-                                   hours=hours)
+                                   hours=hours, photo=photo)
+    form = MoveForm()
+    rating, hours = get_rating()
+    return render_template('display_field.html', title='Игра', form=form, rating=rating,
+                           hours=hours, photo=photo)
 
 
 def main():
@@ -175,6 +188,13 @@ def login():
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
+            global games_dict
+            board = chess.Board()
+            my_stockfish = Stockfish('stockfish_15.1_win_x64_popcnt'
+                                     '/stockfish-windows-2022-x86-64-modern.exe')
+            id = current_user.id
+            end_game = False
+            games_dict[id] = [board, my_stockfish, end_game]
             return redirect("/")
         return render_template('login.html',
                                message="Неправильный логин или пароль",
