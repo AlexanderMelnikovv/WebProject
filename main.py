@@ -86,101 +86,101 @@ def display_field(level):
         rating, hours = get_rating()
         while not board.is_checkmate() or not board.is_variant_draw():
             if form.validate_on_submit():
-                fl = is_correct_move(form.move.data, board)
-                if fl:
-                    get_move = chess.Move.from_uci(form.move.data)
-                    board.push(get_move)
+                if form.move.data == 'reset':
+                    board = chess.Board()
                     board_svg = chess.svg.board(board=board)
                     field_file = open(f'static/img/photo_board{id}.svg', "w")
                     field_file.write(board_svg)
-                    if board.is_checkmate():
-                        end_game = True
-                        id = current_user.id
-                        db_sess = db_session.create_session()
-                        rating = db_sess.query(Rating).filter(Rating.user_id == id).first()
-                        rating.wins += 1
-                        if rating.points <= 1000:
-                            if level == 1:
-                                rating.points += 10
-                            elif level == 2:
-                                rating.points += 40
-                            elif level == 3:
-                                rating.points += 70
-                        elif 1000 < rating.points <= 1500:
-                            if level == 2:
-                                rating.points += 20
-                            elif level == 3:
-                                rating.points += 40
-                        elif 1500 < rating.points:
-                            if level == 2:
-                                rating.points += 5
-                            elif level == 3:
-                                rating.points += 20
-                        db_sess.commit()
-                        return render_template('display_field.html', title='Игра', form=form,
-                                               rating=rating,
-                                               hours=hours, win=True, lose=False, draw=False,
-                                               photo=photo)
-                    elif board.is_variant_draw():
-                        end_game = True
-                        return render_template('display_field.html', title='Игра', form=form,
-                                               rating=rating,
-                                               hours=hours, draw=True, win=False, lose=False,
-                                               photo=photo)
-                    my_stockfish.set_fen_position(board.fen())
-                    best_move = chess.Move.from_uci(my_stockfish.get_best_move())
-                    board.push(best_move)
-                    board_svg = chess.svg.board(board=board)
-                    field_file = open(f'static/img/photo_board{id}.svg', "w")
-                    field_file.write(board_svg)
-                    if board.is_checkmate():
-                        end_game = True
-                        id = current_user.id
-                        db_sess = db_session.create_session()
-                        rating = db_sess.query(Rating).filter(Rating.user_id == id).first()
-                        rating.losses += 1
-                        if rating.points <= 1000:
-                            if level == 1:
-                                rating.points -= 5
-                        elif 1000 < rating.points < 1500:
-                            if level == 1:
-                                rating.points -= 15
-                            elif level == 2:
-                                rating.points -= 5
-                        elif 1500 < rating.points:
-                            if level == 1:
-                                rating.points -= 40
-                            elif level == 2:
-                                rating.points -= 20
-                            elif level == 3:
-                                rating.points -= 5
-                        rating.points = max(0, rating.points)
-                        db_sess.commit()
-                        return render_template('display_field.html', title='Игра', form=form,
-                                               rating=rating,
-                                               hours=hours, lose=True, win=False, draw=False,
-                                               photo=photo)
-                    elif board.is_variant_draw():
-                        end_game = True
-                        return render_template('display_field.html', title='Игра', form=form,
-                                               rating=rating,
-                                               hours=hours, draw=True, lose=False, win=False,
-                                               photo=photo)
-                    elif board.is_check():
-                        return render_template('display_field.html', title='Игра', form=form,
-                                               rating=rating,
-                                               hours=hours, check=True,
-                                               photo=photo)
+                    games_dict[id] = [board, my_stockfish, end_game]
+                    return render_template('display_field.html', title='Игра', form=form,
+                                           rating=rating, hours=hours,
+                                           photo=photo)
                 else:
-                    if form.move.data == 'reset':
-                        board = chess.Board()
+                    fl = is_correct_move(form.move.data, board)
+                    if fl:
+                        get_move = chess.Move.from_uci(form.move.data)
+                        board.push(get_move)
                         board_svg = chess.svg.board(board=board)
                         field_file = open(f'static/img/photo_board{id}.svg', "w")
                         field_file.write(board_svg)
-                        games_dict[id] = [board, my_stockfish, end_game]
-                        return render_template('display_field.html', title='Игра', form=form,
-                                               rating=rating, hours=hours,
-                                               photo=photo)
+                        if board.is_checkmate():
+                            end_game = True
+                            id = current_user.id
+                            db_sess = db_session.create_session()
+                            rating = db_sess.query(Rating).filter(Rating.user_id == id).first()
+                            rating.wins += 1
+                            if rating.points <= 1000:
+                                if level == 1:
+                                    rating.points += 10
+                                elif level == 2:
+                                    rating.points += 40
+                                elif level == 3:
+                                    rating.points += 70
+                            elif 1000 < rating.points <= 1500:
+                                if level == 2:
+                                    rating.points += 20
+                                elif level == 3:
+                                    rating.points += 40
+                            elif 1500 < rating.points:
+                                if level == 2:
+                                    rating.points += 5
+                                elif level == 3:
+                                    rating.points += 20
+                            db_sess.commit()
+                            return render_template('display_field.html', title='Игра', form=form,
+                                                   rating=rating,
+                                                   hours=hours, win=True, lose=False, draw=False,
+                                                   photo=photo)
+                        elif board.is_variant_draw():
+                            end_game = True
+                            return render_template('display_field.html', title='Игра', form=form,
+                                                   rating=rating,
+                                                   hours=hours, draw=True, win=False, lose=False,
+                                                   photo=photo)
+                        my_stockfish.set_fen_position(board.fen())
+                        best_move = chess.Move.from_uci(my_stockfish.get_best_move())
+                        board.push(best_move)
+                        board_svg = chess.svg.board(board=board)
+                        field_file = open(f'static/img/photo_board{id}.svg', "w")
+                        field_file.write(board_svg)
+                        if board.is_checkmate():
+                            end_game = True
+                            id = current_user.id
+                            db_sess = db_session.create_session()
+                            rating = db_sess.query(Rating).filter(Rating.user_id == id).first()
+                            rating.losses += 1
+                            if rating.points <= 1000:
+                                if level == 1:
+                                    rating.points -= 5
+                            elif 1000 < rating.points < 1500:
+                                if level == 1:
+                                    rating.points -= 15
+                                elif level == 2:
+                                    rating.points -= 5
+                            elif 1500 < rating.points:
+                                if level == 1:
+                                    rating.points -= 40
+                                elif level == 2:
+                                    rating.points -= 20
+                                elif level == 3:
+                                    rating.points -= 5
+                            rating.points = max(0, rating.points)
+                            db_sess.commit()
+                            return render_template('display_field.html', title='Игра', form=form,
+                                                   rating=rating,
+                                                   hours=hours, lose=True, win=False, draw=False,
+                                                   photo=photo)
+                        elif board.is_variant_draw():
+                            end_game = True
+                            return render_template('display_field.html', title='Игра', form=form,
+                                                   rating=rating,
+                                                   hours=hours, draw=True, lose=False, win=False,
+                                                   photo=photo)
+                        elif board.is_check():
+                            return render_template('display_field.html', title='Игра', form=form,
+                                                   rating=rating,
+                                                   hours=hours, check=True,
+                                                   photo=photo)
             return render_template('display_field.html', title='Игра', form=form, rating=rating,
                                    hours=hours, photo=photo)
     form = MoveForm()
