@@ -139,7 +139,6 @@ async def chess_training(update, context):
             for i in range(len(texts)):
                 await context.bot.send_photo(
                     update.message.chat_id, photo[i], caption=texts[i])
-                await asyncio.sleep(20)
         else:
             await update.message.reply_text(
                 context.user_data['chess_training'][str(context.user_data['training level'])][
@@ -205,33 +204,6 @@ async def start(update, context):
                                     ' потренировать ваше навыки в игре! Все функции доступны'
                                     ' в меню!', reply_markup=ReplyKeyboardRemove())
     return 0
-
-
-async def timer(update, context):
-    await update.message.reply_text("\U0001f557 Можете использовать таймер. "
-                                    "Для этого введите нужно количество времени,"
-                                    " вида: <число (сек, мин)>", reply_markup=ReplyKeyboardRemove())
-    return 4
-
-
-async def start_timer(update, context):
-    req = update.message.text.split()
-    if len(req) == 2 and req[0].isdigit() and req[-1] in ['сек', 'мин']:
-        morph = pymorphy2.MorphAnalyzer()
-        n = int(req[0])
-        n1 = n
-        word = "секунда"
-        if req[-1] == 'мин':
-            n *= 60
-            word = "минута"
-        word = morph.parse(word)[0]
-        word = word.inflect({'accs'})
-        word = word.make_agree_with_number(n1).word
-        await update.message.reply_text(f"Я засекаю {n1} {word}.")
-        await asyncio.sleep(n)
-        await update.message.reply_text(f"\u2757 Время истекло!")
-    else:
-        await update.message.reply_text("Введите запрос вида: <число (сек, мин)>")
 
 
 async def interesting_facts(update, context):
@@ -319,7 +291,6 @@ def main():
             1: [MessageHandler(filters.TEXT & ~filters.COMMAND, information_about_chess_players)],
             2: [MessageHandler(filters.TEXT & ~filters.COMMAND, chess_training)],
             3: [MessageHandler(filters.TEXT & ~filters.COMMAND, search_terms)],
-            4: [MessageHandler(filters.TEXT & ~filters.COMMAND, start_timer)],
             5: [MessageHandler(filters.TEXT & ~filters.COMMAND, random_fact)],
             6: [MessageHandler(filters.TEXT & ~filters.COMMAND, debuts)],
             7: [MessageHandler(filters.TEXT & ~filters.COMMAND, puzzles)]
@@ -327,7 +298,6 @@ def main():
         fallbacks=[CommandHandler("training", training),
                    CommandHandler("chess_players", chess_players),
                    CommandHandler("chess_dictionary", chess_dictionary),
-                   CommandHandler("timer", timer),
                    CommandHandler("interesting_facts", interesting_facts),
                    CommandHandler("chess_debuts", chess_debuts),
                    CommandHandler("solving_puzzles", solving_puzzles)])

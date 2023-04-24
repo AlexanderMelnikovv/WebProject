@@ -20,13 +20,16 @@ games_dict = {}
 
 
 def is_correct_move(move, board):
-    test_move = chess.Move.from_uci(str(move))
-    if board.is_legal(test_move):
-        return True
-    for x in list(board.legal_moves):
-        if move == str(x):
+    try:
+        test_move = chess.Move.from_uci(str(move))
+        if board.is_legal(test_move):
             return True
-    return False
+        for x in list(board.legal_moves):
+            if move == str(x):
+                return True
+        return False
+    except Exception:
+        return False
 
 
 def get_rating():
